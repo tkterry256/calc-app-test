@@ -130,7 +130,7 @@ function alertError() {
       type="button"
       @click="handleCalculate"
       :disabled="calcState === 'loading'"
-      class="w-full max-w-xs mx-auto mb-3 flex justify-center items-center py-1 bg-green-600 text-white font-semibold text-lg disabled:bg-blue-300"
+      class="w-full max-w-xs mx-auto mb-3 flex justify-center items-center py-1 bg-purple-600 text-white font-semibold text-lg disabled:bg-blue-300"
     >
       {{ calcState === "loading" ? "Calculating" : "Calculate" }}
     </button>
