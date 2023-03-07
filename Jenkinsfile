@@ -79,7 +79,7 @@ pipeline{
         }
 	
 	 stage('Deploy to production'){
-	    when { allOf { branch 'main'; not { changeRequest } } }
+	    when { allOf { branch 'main'; not changeRequest } }
             steps{
                 sh '''
                     docker stop calc-app && docker rm calc-app || true
