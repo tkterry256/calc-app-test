@@ -65,7 +65,8 @@ pipeline{
             
         }
 
-        stage('Deploy docker image'){
+        stage('Deploy to staging'){
+	    when { branch 'develop' }
             steps{
                 sh '''
                     docker stop calc-app-dev && docker rm calc-app-dev || true
@@ -75,11 +76,19 @@ pipeline{
                 fauzianaava/calc-app:$BUILD_NUMBER
                 '''
             }
-            input{
-                message "Press Ok to continue"
-                submitter "coder"
-	        }
-            
+        }
+	
+	 stage('Deploy to production'){
+	    when { branch 'main' }
+            steps{
+                sh '''
+                    docker stop calc-app && docker rm calc-app || true
+                    docker run \\
+                -e MONGO_PROD="${MONGO_PROD}" -e MONGO_DEV="${MONGO_DEV}" -e PORT='8080' -e NODE_ENV=production \\
+                -d -p 8000:8080 --name calc-app \\
+                fauzianaava/calc-app:$BUILD_NUMBER
+                '''
+            }
         }
     }
 }
