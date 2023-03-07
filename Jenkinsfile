@@ -66,7 +66,7 @@ pipeline{
         }
 
         stage('Deploy to staging'){
-	    when { branch 'develop' }
+	    when { changeRequest target: 'main' }
             steps{
                 sh '''
                     docker stop calc-app-dev && docker rm calc-app-dev || true
@@ -79,7 +79,7 @@ pipeline{
         }
 	
 	 stage('Deploy to production'){
-	    when { branch 'main' }
+	    when { allOf { branch 'main'; not { changeRequest } } }
             steps{
                 sh '''
                     docker stop calc-app && docker rm calc-app || true
